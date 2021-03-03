@@ -8,4 +8,4 @@ description = "A comprehensive listing of 3rd party services and their status if
 | Redis    | ✓                 | ✓    | ✓             |        |
 | RabbitMQ | ✓                 |      |               |        |
 | MySQL    | ✓                 |      |               | ✓      |
-| Redis    | x                 | ✓  
+| Redis    | x                 | ✓     |              |         |
