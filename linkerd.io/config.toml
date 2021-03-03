@@ -1,64 +1,121 @@
-baseurl = "https://linkerd.io/"
-title = "Linkerd"
-languageCode = "en-US"
 Paginate = 10
-sectionPagesMenu = "main"
-enableRobotsTXT = true
+baseurl = "https://linkerd.io/"
 disableKinds = ["taxonomy", "taxonomyTerm"]
-
-[permalinks]
-blog = "/:year/:month/:day/:slug/"
-
-#CUSTOM PARAMS
-[params]
-  latest_release_version = "1.6.3"
-  latest_release_date = "2019-05-10"
-  description = "Linkerd is the fastest, lightest, simplest service mesh for Kubernetes"
-
-  l5d2_release_version = "L5D2_STABLE_VERSION"
-  l5d2_edge_version = "L5D2_EDGE_VERSION"
-
-[blackfriday]
-  HrefTargetBlank = true
-
-# MENU: top nav bar
-[[menu.top]]
-  name = "Docs"
-  identifier = "documentation"
-  weight = 1
-  url = "/docs/"
-
-[[menu.top]]
-  name = "Community"
-  weight = 2
-  url = "/community/"
-
-[[menu.top]]
-  name = "Blog"
-  identifier = "blog"
-  weight = 3
-  url = "/blog/"
-
-[[menu.top]]
-  name = "Enterprise"
-  weight = 4
-  url = "/enterprise/"
-
-[[menu.top]]
-  name = "GitHub"
-  identifier = "github"
-  weight = 5
-  pre = "<i class='fab fa-github mr-1' aria-hidden='true'></i>"
-  url = "https://github.com/linkerd/linkerd2"
-
-# Auto-generate Netlify _redirects file
+enableRobotsTXT = true
+languageCode = "en-US"
+sectionPagesMenu = "main"
+theme = "buoyant"
+title = "Linkerd"
+[markup]
+	defaultMarkdownHandler = "blackfriday"
+  [markup.blackFriday]
+    angledQuotes = false
+    footnoteAnchorPrefix = ""
+    footnoteReturnLinkContents = ""
+    fractions = true
+    hrefTargetBlank = true
+    latexDashes = true
+    nofollowLinks = false
+    noreferrerLinks = false
+    plainIDAnchors = true
+    skipHTML = false
+    smartDashes = true
+    smartypants = true
+    smartypantsQuotesNBSP = false
+    taskLists = true
 [mediaTypes."text/netlify"]
 delimiter = ""
-
+[[menu.community]]
+name = "Slack"
+url = "https://slack.linkerd.io/"
+weight = 2
+[[menu.community]]
+name = "GitHub"
+url = "https://github.com/linkerd/linkerd2"
+weight = 1
+[[menu.follow]]
+name = "Twitter"
+url = "https://twitter.com/linkerd"
+weight = 3
+[[menu.follow]]
+name = "YouTube"
+url = "https://www.youtube.com/buoyantio"
+weight = 1
+[[menu.top]]
+identifier = "documentation"
+name = "Docs"
+url = "/docs/"
+weight = 1
+[[menu.top]]
+identifier = "community"
+name = "Community"
+url = "/community/"
+weight = 2
+[[menu.top]]
+identifier = "get-involved"
+name = "Get Involved"
+url = "/community/get-involved/"
+weight = 1
+parent = "community"
+[[menu.top]]
+identifier = "community-anchors"
+name = "Community Anchors"
+url = "/community/anchor/"
+weight = 2
+parent = "community"
+[[menu.top]]
+identifier = "community-heroes"
+name = "Linkerd Heroes"
+url = "/community/heroes/"
+weight = 3
+parent = "community"
+[[menu.top]]
+identifier = "community-adopters"
+name = "Adopters"
+url = "/community/adopters/"
+weight = 3
+parent = "community"
+[[menu.top]]
+identifier = "blog"
+name = "Blog"
+url = "/blog/"
+weight = 3
+[[menu.top]]
+identifier = "faq"
+name = "FAQ"
+url = "/2/faq/"
+weight = 4
+[[menu.top]]
+identifier = "github"
+name = "GitHub"
+pre = "<i class='fab fa-github fa-lg' aria-hidden='true'></i>"
+url = "https://github.com/linkerd/linkerd2"
+weight = 5
+[[menu.top]]
+identifier = "start"
+name = "GET STARTED"
+post = "</span>"
+pre = "<span class='button-spacer'>"
+url = "/2/getting-started/"
+weight = 6
 [outputFormats.REDIRECTS]
-mediaType = "text/netlify"
 baseName = "_redirects"
-
+mediaType = "text/netlify"
+[outputFormats.RSS]
+mediatype = "application/RSS"
+baseName = "feed"
 [outputs]
-home = ["HTML", "REDIRECTS"]
-section = ["HTML", "JSON"]
+home = ["HTML", "RSS", "REDIRECTS"]
+section = ["HTML", "RSS", "JSON"]
+[params]
+description = "Linkerd is an ultralight service mesh for Kubernetes. It gives you observability, reliability, and security without requiring any code changes."
+images = [""]
+latest_release_date = "2020-06-10"
+latest_release_version = "1.7.4"
+logo = "/images/identity/svg/linkerd_primary_color_white.svg"
+[permalinks]
+blog = "/:year/:month/:day/:slug/"
+[privacy.twitter]
+disable = false
+enableDNT = false
+simple = false

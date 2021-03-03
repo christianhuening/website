@@ -1,22 +1,19 @@
 +++
-title = "namerd"
+aliases = ["/in-depth/namerd", "/advanced/namerd"]
 description = "Introduces namerd as a service that helps route Linkerd requests and centralizes routing decisions to provide global Linkerd control."
+title = "namerd"
 weight = 20
-aliases = [
-  "/in-depth/namerd",
-  "/advanced/namerd"
-]
 [menu.docs]
-  parent = "advanced"
-+++
+parent = "advanced"
+weight = 26
 
++++
 namerd is a service that manages routing for multiple Linkerd instances. It does
 this by storing [dtabs]({{% ref "/1/advanced/dtabs.md" %}}) and using
 [namers]({{% ref "/1/advanced/dtabs.md#namers-addresses" %}}) for service
 discovery. namerd supports the same suite of service discovery backends that
 Linkerd does, which include services like
-[ZooKeeper](https://twitter.github.io/commons/apidocs/com/twitter/common/zookeeper/ServerSet.html),
-[Consul](https://www.consul.io/), [Kubernetes
+ZooKeeper, [Consul](https://www.consul.io/), [Kubernetes
 API](http://kubernetes.io/docs/api), and
 [Marathon](https://mesosphere.github.io/marathon/).
 
@@ -53,7 +50,7 @@ To learn more about namerd, its setup, and its operation, check out Buoyant's
 blog post on [dynamic routing](https://blog.buoyant.io/2016/05/04/real-world-microservices-when-services-stop-playing-well-and-start-getting-real/#dynamic-routing-with-namerd).
 
 To configure your own namerd, head over to the
-[namerd config documention]({{% namerdconfig %}}).
+[namerd config documentation]({{% namerdconfig %}}).
 Also check out [namerctl](https://github.com/linkerd/namerctl),
 our open source tool for controlling namerd.
 

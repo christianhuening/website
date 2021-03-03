@@ -1,16 +1,13 @@
 +++
-title = "External resources"
+aliases = ["/overview/external-resources", "/support/external-resources", "/examples/external-resources"]
 description = "Catalogues blogs and talks about Linkerd in practice, from both the perspective of an end user and the perspective of a developer."
+title = "External resources"
 weight = 2
-aliases = [
-  "/overview/external-resources",
-  "/support/external-resources",
-  "/examples/external-resources"
-]
 [menu.docs]
-  parent = "examples"
-+++
+parent = "examples"
+weight = 23
 
++++
 This page features blogs and talks people have given about Linkerd. Content
 produced by both Buoyant and Linkerd users is represented below.
 
@@ -19,9 +16,6 @@ You can also check out [Buoyant's blog](https://buoyant.io/blog) for more posts!
 <!-- markdownlint-disable MD033 -->
 
 ## Linkerd Users
-
-* [Linkerd: the Cloud Native service mesh](https://skillsmatter.com/skillscasts/10912-cloud-native-london-october)<br>
-Cloud Native London, October 2017
 
 * [How ForeSee Processes Billions of Events Per Day with Linkerd](https://youtu.be/YRjUuhiXIPc)<br>
 Buoyant Webinar, August 2017
@@ -34,9 +28,7 @@ Microsoft TechDays Online, February 2017
 
 * [Building a Modern Bank
   Backend](https://monzo.com/blog/2016/09/19/building-a-modern-bank-backend/)
-  (blog)<br> [Building a Bank with
-  Kubernetes](https://skillsmatter.com/skillscasts/9146-building-a-bank-with-kubernetes)
-  (slides)<br>
+  (blog)
 Monzo, October 2016
 
 ## Linkerd Developers

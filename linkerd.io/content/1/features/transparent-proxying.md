@@ -1,15 +1,13 @@
 +++
-title = "Transparent Proxying"
+aliases = ["/getting-started/transparent-proxying", "/features/transparent-proxying"]
 description = "Linkerd can be used for transparent proxying by using the linkerd-inject utility to configure your host's iptables rules."
+title = "Transparent Proxying"
 weight = 7
-aliases = [
-  "/getting-started/transparent-proxying",
-  "/features/transparent-proxying"
-]
 [menu.docs]
-  parent = "features"
-+++
+parent = "features"
+weight = 21
 
++++
 If you're running in Kubernetes, you can use the
 [linkerd-inject](https://github.com/linkerd/linkerd-inject)
 utility to transparently proxy requests through a
@@ -22,6 +20,7 @@ to a single Linkerd port, so it won't work if you are using multiple protocols.
 
 To use `linkerd-inject`:
 
+<!-- markdownlint-disable MD014 -->
 ```bash
 # install linkerd-inject
 $ go get github.com/linkerd/linkerd-inject
@@ -29,6 +28,7 @@ $ go get github.com/linkerd/linkerd-inject
 # inject init container and deploy this config
 $ kubectl apply -f <(linkerd-inject -f <your k8s config>.yml -linkerdPort 4140)
 ```
+<!-- markdownlint-enable MD014 -->
 
 Note that in minikube, you need the `-useServiceVip` flag.
 

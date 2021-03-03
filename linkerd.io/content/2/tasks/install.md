@@ -35,6 +35,16 @@ Linkerd by running
 linkerd check --pre
 ```
 
+### GKE
+
+If installing Linkerd on GKE, there are some extra steps required depending on
+how your cluster has been configured. If you are using any of these features,
+check out the additional instructions.
+
+- [Private clusters](/2/reference/cluster-configuration/#private-clusters)
+
+## Installing
+
 Once you have a cluster ready, generally speaking, installing Linkerd is as
 easy as running `linkerd install` to generate a Kubernetes manifest, and
 applying that to your cluster, for example, via
@@ -45,24 +55,97 @@ linkerd install | kubectl apply -f -
 
 See [Getting Started](/2/getting-started/) for an example.
 
-Finally, after control plane installation, the `linkerd check` command (without
-`--pre`) may be used to validate that the installation was successful.
+{{< note >}}
+Most common configuration options are provided as flags for `install`. See the
+[reference documentation](/2/reference/cli/install/) for a complete list of
+options. To do configuration that is not part of the `install` command, see how
+you can create a [customized install](/2/tasks/customize-install/).
+{{< /note >}}
 
-Below we go through some common issues that may prevent successful
-installation.
+{{< note >}}
+For organizations that distinguish cluster privileges by role, jump to the
+[Multi-stage install](#multi-stage-install) section.
+{{< /note >}}
 
-## Google Kubernetes Engine (GKE) clusters with RBAC enabled {#gke}
+## Verification
 
-If you are using GKE with RBAC enabled, you first need to grant a `ClusterRole`
-of `cluster-admin` to your Google Cloud account first. This will provide your
-current user all the permissions required to install the control plane. To bind
-this `ClusterRole` to your user, you can run:
+After installation, you can validate that the installation was successful by
+running:
 
 ```bash
-kubectl create clusterrolebinding cluster-admin-binding-$USER \
-    --clusterrole=cluster-admin --user=$(gcloud config get-value account)
+linkerd check
 ```
 
 ## Uninstalling
 
 See [Uninstalling Linkerd](/2/tasks/uninstall/).
+
+## Multi-stage install
+
+If your organization assigns Kubernetes cluster privileges based on role
+(typically cluster owner and service owner), Linkerd provides a "multi-stage"
+installation to accommodate these two roles. The two installation stages are
+`config` (for the cluster owner) and `control-plane` (for the service owner).
+The cluster owner has privileges necessary to create namespaces, as well as
+global resources including cluster roles, bindings, and custom resource
+definitions. The service owner has privileges within a namespace necessary to
+create deployments, configmaps, services, and secrets.
+
+### Stage 1: config
+
+The `config` stage is intended to be run by the cluster owner, the role with
+more privileges. It is also the cluster owner's responsibility to run the
+initial pre-install check:
+
+```bash
+linkerd check --pre
+```
+
+Once the pre-install check passes, install the config stage with:
+
+```bash
+linkerd install config | kubectl apply -f -
+```
+
+In addition to creating the `linkerd` namespace, this command installs the
+following resources onto your Kubernetes cluster:
+
+- ClusterRole
+- ClusterRoleBinding
+- CustomResourceDefinition
+- MutatingWebhookConfiguration
+- PodSecurityPolicy
+- Role
+- RoleBinding
+- Secret
+- ServiceAccount
+- ValidatingWebhookConfiguration
+
+To validate the `config` stage succeeded, run:
+
+```bash
+linkerd check config
+```
+
+### Stage 2: control-plane
+
+Following successful installation of the `config` stage, the service owner may
+install the `control-plane` with:
+
+```bash
+linkerd install control-plane | kubectl apply -f -
+```
+
+This command installs the following resources onto your Kubernetes cluster, all
+within the `linkerd` namespace:
+
+- ConfigMap
+- Deployment
+- Secret
+- Service
+
+To validate the `control-plane` stage succeeded, run:
+
+```bash
+linkerd check
+```

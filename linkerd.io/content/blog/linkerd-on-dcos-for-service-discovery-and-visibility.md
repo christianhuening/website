@@ -1,15 +1,17 @@
 ---
 slug: 'linkerd-on-dcos-for-service-discovery-and-visibility'
 title: 'Linkerd on DC/OS for Service Discovery and Visibility'
+aliases:
+  - /2016/10/10/linkerd-on-dcos-for-service-discovery-and-visibility/
 author: 'andrew'
 date: Mon, 10 Oct 2016 22:45:50 +0000
 draft: false
-thumbnail: linkerd_featured_DCOS.png
+featured: false
+thumbnail: /uploads/linkerd_featured_DCOS.png
 tags: [Article, Education, Linkerd, linkerd, tutorials]
 ---
 
-In our previous post, [Linkerd as a service mesh for
-Kubernetes][part-i], we
+In our previous post, [Linkerd as a service mesh for Kubernetes][part-i], we
 showed you how to use Linkerd on Kubernetes for drop-in service discovery and
 monitoring. In this post, we’ll show you how to get the same features
 on [DC/OS](https://dcos.io/), and discuss how this compares with DNS-based
@@ -17,10 +19,10 @@ solutions like Mesos-DNS.
 
 When building applications in a scheduled environment like DC/OS, one of the
 first questions you’ll face is how to do service discovery. Similar to
-Kubernetes, DC/OS provides [several service discovery options out of the
-box](https://dcos.io/docs/1.8/usage/service-discovery/), including at least one
-DNS-based option. But what exactly is service discovery, and how is it different
-from DNS?
+Kubernetes, DC/OS
+provides several service discovery options out of the box,
+including at least one DNS-based option. But what exactly is service discovery,
+and how is it different from DNS?
 
 Service discovery is how your applications and services find each other. Given
 the name of a service, service discovery tells you where that service is: on
@@ -37,7 +39,7 @@ An analogous system to service discovery is DNS. DNS was designed to answer a
 similar question: given the hostname of a machine, e.g. `buoyant.io`, what is
 the IP address of that host? In fact, DNS can be used as a basic form of service
 discovery, and DC/OS ships
-with [Mesos-DNS](https://dcos.io/docs/1.8/usage/service-discovery/mesos-dns/) out
+with Mesos-DNS out
 of the box.
 
 Although DNS is widely supported and easy to get started with, in practice, it
@@ -63,8 +65,8 @@ Enter Linkerd!
 \[communication that’s transparent to the application itself. One aspect of this
 \[reliability is service discovery.
 
-For DC/OS users, the [Linkerd Universe
-package](https://github.com/mesosphere/universe/tree/version-3.x/repo/packages/L/linkerd/6)
+For DC/OS users,
+the [Linkerd Universe package](https://github.com/mesosphere/universe/tree/version-3.x/repo/packages/L/linkerd/6)
 is configured out of the box to do service discovery directly from Marathon.
 This means that applications and services can refer to each other by their
 Marathon task name. For example, a connection to `http://myservice` made via
@@ -78,8 +80,8 @@ the cluster and configures it to act as an HTTP proxy. This means that most HTTP
 applications can use Linkerd simply by setting the `http_proxy` environment
 variable to localhost:, without code changes. (For non-HTTP applications, or
 situations where setting this environment variable is not viable, Linkerd can
-still be used with [a little more
-configuration](https://linkerd.io/config/latest/linkerd/).)
+still be used
+with [a little more configuration](https://api.linkerd.io/latest/linkerd/index.html).)
 
 Let’s walk through a quick demonstration of installing Linkerd and using it for
 service discovery. After this step, we’ll also show you how, once it’s
@@ -90,16 +92,15 @@ service metrics like success rates and request latencies.
 
 ### STEP 0: PREREQUISITES
 
-You will need: - A running DC/OS cluster. - The [DC/OS CLI
-installed](https://dcos.io/docs/1.8/usage/cli/install/).
+You will need: - A running DC/OS cluster. -
+The DC/OS CLI installed.
 
 ### STEP 1: DEPLOY A SAMPLE APPLICATION
 
 First, we’ll deploy a simple example application. Use
-the [webapp.json][webapp.json] example
-application (borrowed from this [Marathon
-guide](https://mesosphere.github.io/marathon/docs/native-docker.html)) from the
-DC/OS CLI as follows:
+the [webapp.json][webapp.json] example application (borrowed from
+this [Marathon guide](https://mesosphere.github.io/marathon/docs/native-docker.html))
+from the DC/OS CLI as follows:
 
 ```bash
 dcos marathon app add https://raw.githubusercontent.com/linkerd/linkerd-examples/master/dcos/webapp.json
@@ -198,8 +199,8 @@ latency-aware load balancing, automatic retries and circuit breaking,
 distributed tracing, and more.
 
 To read more about these features and how to take advantage of them in your
-application, take a look at the comprehensive [Linkerd
-documentation](https://linkerd.io/documentation/).
+application, take a look at the
+comprehensive [Linkerd documentation](https://linkerd.io/documentation/).
 
 Linkerd also has a thriving community of users and developers. If you get stuck,
 need help, or have questions, feel free to reach out via one of the following
@@ -211,10 +212,14 @@ channels:
 
 ## Acknowledgments
 
-This post was co-authored with [Ravi
-Yadav](https://twitter.com/RaaveYadav) from [Mesosphere](https://mesosphere.com/).
-Thanks to [Alex Leong](https://twitter.com/adlleong) and [Oliver
-Gould](https://twitter.com/olix0r) for feedback on earlier drafts of this post.
+This post was co-authored
+with [Ravi Yadav](https://twitter.com/RaaveYadav) from [Mesosphere](https://d2iq.com/solutions/mesosphere).
+Thanks
+to [Alex Leong](https://twitter.com/adlleong) and [Oliver Gould](https://twitter.com/olix0r) for
+feedback on earlier drafts of this post.
 
-[webapp.json]: https://raw.githubusercontent.com/linkerd/linkerd-examples/master/dcos/webapp.json
-[part-i]: {{< ref "a-service-mesh-for-kubernetes-part-i-top-line-service-metrics" >}}
+[webapp.json]:
+  https://raw.githubusercontent.com/linkerd/linkerd-examples/master/dcos/webapp.json
+
+[part-i]:
+{{< ref "a-service-mesh-for-kubernetes-part-i-top-line-service-metrics" >}}

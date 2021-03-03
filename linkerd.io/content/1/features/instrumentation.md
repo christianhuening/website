@@ -1,14 +1,13 @@
 +++
-title = "Instrumentation"
+aliases = ["/features/instrumentation"]
 description = "Linkerd supports both distributed tracing and metrics instrumentation, providing uniform observability across all services."
+title = "Instrumentation"
 weight = 10
-aliases = [
-  "/features/instrumentation"
-]
 [menu.docs]
-  parent = "features"
-+++
+parent = "features"
+weight = 12
 
++++
 Linkerd provides detailed histograms of communication latency and payload sizes,
 as well as success rates and load-balancing statistics, in both human-readable
 and machine-parsable formats. This means that even polyglot applications can
@@ -34,7 +33,7 @@ any metrics aggregator, it includes some common formats out of the box, includin
 For configuring a telemeter such as Prometheus, see the
 [Telemetry section of the Linkerd config]({{% linkerdconfig "telemetry" %}}).
 
-For more detail about Metrics instrumention, see the
+For more detail about Metrics instrumentation, see the
 [Telemetry section of the Admin guide]({{% ref
 "/1/administration/telemetry.md"
 %}}).

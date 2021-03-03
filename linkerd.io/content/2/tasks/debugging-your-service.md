@@ -1,6 +1,6 @@
 +++
-title = "Debugging Your Service"
-description = "Linkerd makes it easy to debug a failing application. Check out how to do it yourself with Emojivoto."
+title = "Debugging gRPC applications with request tracing"
+description = "Follow a long-form example of debugging a failing gRPC application using live request tracing."
 aliases = [
   "/debugging-an-app/",
   "/2/debugging-an-app/"
@@ -24,7 +24,7 @@ requests per second and latency percentiles.
 That's pretty neat, but the first thing you might notice is that the success
 rate is well below 100%! Click on `web` and let's dig in.
 
-{{< fig src="/images/debugging/deployment-detail.png" title="Deployment Detail" >}}
+{{< fig src="/images/debugging/octopus.png" title="Deployment Detail" >}}
 
 You should now be looking at the Deployment page for the web deployment. The first
 thing you'll see here is that the web deployment is taking traffic from `vote-bot`

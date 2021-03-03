@@ -1,18 +1,14 @@
 +++
-title = "Frequently asked questions"
+aliases = ["/doc/faq", "/overview/faq", "/support"]
 description = "Ways to get help using Linkerd"
+title = "Frequently asked questions"
 weight = 1
-aliases = [
-  "/doc/faq",
-  "/overview/faq",
-  "/support"
-]
 [menu.docs]
-  name = "Support"
-  identifier = "support"
-  weight = 8
-+++
+identifier = "support"
+name = "Support"
+weight = 9
 
++++
 <!-- markdownlint-disable MD026 -->
 
 ## How do I pronounce "Linkerd"?
@@ -24,7 +20,7 @@ aliases = [
 Linkerd can be thought of as a *dynamic linker* for microservices. In an
 operating system, the dynamic linker takes runtime information about the name
 of a library and function call to be executed, and performs whatever work is
-necessary to make that function invokable to an executable. Linkerd does the
+necessary to make that function invocable to an executable. Linkerd does the
 analogous task for microservices: it takes the name of a service and of a call
 to make on that service (HTTP, gRPC, etc.), and does the work required to make
 the call successful---including routing, load-balancing, and retrying.

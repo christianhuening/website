@@ -1,11 +1,11 @@
 +++
-title = "Demo: Books"
-description = "Try out some of Linkerd's features, such as per-route metrics with a demo application."
+title = "Debugging HTTP applications with per-route metrics"
+description = "Follow a long-form example of debugging a failing HTTP application using per-route metrics."
 +++
 
-This is a Ruby application that helps you manage your bookshelf. It consists of
-multiple microservices and uses JSON over HTTP to communicate with the other
-services. There are three services:
+This demo is of a Ruby application that helps you manage your bookshelf. It
+consists of multiple microservices and uses JSON over HTTP to communicate with
+the other services. There are three services:
 
 - [webapp](https://github.com/BuoyantIO/booksapp/blob/master/webapp.rb): the
   frontend
@@ -23,9 +23,9 @@ topology looks like this:
 
 ## Prerequisites
 
-To complete this guide, you'll need to have installed
-Linkerd on your cluster. Follow the [installing](/2/tasks/install/) guide to get
-that setup if you've not already.
+To use this guide, you'll need to have Linkerd installed on your cluster.
+Follow the [Installing Linkerd Guide](/2/tasks/install/) if you haven't already
+done this.
 
 ## Install the app
 
@@ -39,13 +39,13 @@ kubectl create ns booksapp && \
 ```
 
 This command creates a namespace for the demo, downloads its Kubernetes
-resource manifest and uses `kubectl` to apply it to your cluster. The
-app is comprised of Kubernetes deployments and services that run in the
-`booksapp` namespace.
+resource manifest and uses `kubectl` to apply it to your cluster. The app
+comprises the Kubernetes deployments and services that run in the `booksapp`
+namespace.
 
 Downloading a bunch of containers for the first time takes a little while.
-Kubernetes can tell you when all the services are running and ready for traffic.
-Wait for that to happen by running:
+Kubernetes can tell you when all the services are running and ready for
+traffic. Wait for that to happen by running:
 
 ```bash
 kubectl -n booksapp rollout status deploy webapp
@@ -58,8 +58,8 @@ cluster by running:
 kubectl -n booksapp get all
 ```
 
-Once the rollout has completed successfully, you can get access to the app
-itself by port-forwarding `webapp` locally:
+Once the rollout has completed successfully, you can access the app itself by
+port-forwarding `webapp` locally:
 
 ```bash
 kubectl -n booksapp port-forward svc/webapp 7000 &
@@ -70,19 +70,19 @@ frontend.
 
 {{< fig src="/images/books/frontend.png" title="Frontend" >}}
 
-As you can imagine, there is an error in the app. If you click "Add Book", it
-will fail 50% of the time. This is a classic case of non-obvious, intermittent
-failure – the type that drives service owners mad because it is so difficult to
-debug. Because Kubernetes is interested in keeping processes running, it will
-show you that everything is running. It looks like everything’s fine, but you
-know the application is returning errors.
+Unfortunately, there is an error in the app: if you click *Add Book*, it will
+fail 50% of the time. This is a classic case of non-obvious, intermittent
+failure---the type that drives service owners mad because it is so difficult to
+debug. Kubernetes itself cannot detect or surface this error. From Kubernetes's
+perspective, it looks like everything's fine, but you know the application is
+returning errors.
 
 {{< fig src="/images/books/failure.png" title="Failure" >}}
 
-## Add Linkerd
+## Add Linkerd to the service
 
-There are a couple of ways to add Linkerd to our service. For demo purposes,
-the easiest is to do something like this:
+Now we need to add the Linkerd data plane proxies to the service. The easiest
+option is to do something like this:
 
 ```bash
 kubectl get -n booksapp deploy -o yaml \
@@ -91,21 +91,13 @@ kubectl get -n booksapp deploy -o yaml \
 ```
 
 This command retrieves the manifest of all deployments in the `booksapp`
-namespace, runs the manifest through `linkerd inject`, and then re-applies with
-`kubectl apply`. The `inject` command adds two containers to each deployment's
-pod spec:
-
-- An `initContainer` that sets up `iptables` to forward all incoming and
-  outgoing traffic through Linkerd's proxy.
-- A `container` that runs the proxy.
-
-As with `install`, `inject` is a pure text operation. This means that you can
-inspect the input and output before you use it. As these are deployments,
-Kubernetes will slowly update pods one at a time. There can be live traffic
-while Linkerd is added!
-
-If you're interested in a more automatic way to inject deployments, check out
-the [automating injection](/2/tasks/automating-injection/) documentation.
+namespace, runs them through `linkerd inject`, and then re-applies with
+`kubectl apply`. The `linkerd inject` command annotates each resource to
+specify that they should have the Linkerd data plane proxies added, and
+Kubernetes does this when the manifest is reapplied to the cluster. Best of
+all, since Kubernetes does a rolling deploy, the application stays running the
+entire time. (See [Automatic Proxy Injection](/2/features/proxy-injection/) for
+more details on how this works.)
 
 ## Debugging
 
@@ -118,8 +110,10 @@ linkerd dashboard &
 
 {{< fig src="/images/books/dashboard.png" title="Dashboard" >}}
 
-You should see all the services in the `booksapp` namespace show up. There will
-be success rate, requests per second, and latency percentiles.
+Select `booksapp` from the namespace dropdown and click on the
+[Deployments](http://localhost:50750/namespaces/booksapp/deployments) workload.
+You should see all the deployments in the `booksapp` namespace show up. There
+will be success rate, requests per second, and latency percentiles.
 
 That’s cool, but you’ll notice that the success rate for `webapp` is not 100%.
 This is because the traffic generator is submitting new books. You can do the
@@ -144,8 +138,9 @@ receiving. This is interesting:
 
 Aha! We can see that inbound traffic coming from the `webapp` service going to
 the `books` service is failing a significant percentage of the time. That could
-explain why `webapp` was throwing intermittent failures. Let’s click on the 🔬
-icon to look at the actual request and response stream.
+explain why `webapp` was throwing intermittent failures. Let’s click on the tap
+(🔬) icon and then on the Start button to look at the actual request and
+response stream.
 
 {{< fig src="/images/books/tap.png" title="Tap" >}}
 
@@ -188,7 +183,7 @@ Alongside `install` and `inject`, `profile` is also a pure text operation. Check
 out the profile that is generated:
 
 ```yaml
-apiVersion: linkerd.io/v1alpha1
+apiVersion: linkerd.io/v1alpha2
 kind: ServiceProfile
 metadata:
   creationTimestamp: null
@@ -268,7 +263,7 @@ This will watch all the live requests flowing through `webapp` and look
 something like:
 
 ```bash
-req id=0:1 proxy=in  src=10.1.3.76:57152 dst=10.1.3.74:7000 tls=disabled :method=POST :authority=webapp.default:7000 :path=/books/2878/edit src_res=deploy/traffic src_ns=foobar dst_res=deploy/webapp dst_ns=default rt_route=POST /books/{id}/edit
+req id=0:1 proxy=in  src=10.1.3.76:57152 dst=10.1.3.74:7000 tls=true :method=POST :authority=webapp.default:7000 :path=/books/2878/edit src_res=deploy/traffic src_ns=booksapp dst_res=deploy/webapp dst_ns=booksapp rt_route=POST /books/{id}/edit
 ```
 
 As you can see:
@@ -308,12 +303,12 @@ GET /books.json             books   100.00%   1.1rps           7ms          12ms
 GET /books/{id}.json        books   100.00%   2.5rps           6ms          10ms          10ms
 POST /books.json            books    52.24%   2.2rps          23ms          34ms          39ms
 PUT /books/{id}.json        books    41.98%   1.4rps          73ms          97ms          99ms
-[DEFAULT]                   books     0.00%   0.0rps           0ms           0ms           0ms
+[DEFAULT]                   books         -        -             -             -             -
 ```
 
 ## Retries
 
-As it can take awhile to update code and roll out a new version, let's
+As it can take a while to update code and roll out a new version, let's
 tell Linkerd that it can retry requests to the failing endpoint. This will
 increase request latencies, as requests will be retried multiple times, but not
 require rolling out a new version.
@@ -329,12 +324,12 @@ The output should look like:
 
 ```bash
 ROUTE                       SERVICE   SUCCESS      RPS   LATENCY_P50   LATENCY_P95   LATENCY_P99
-DELETE /authors/{id}.json   authors     0.00%   0.0rps           0ms           0ms           0ms
-GET /authors.json           authors     0.00%   0.0rps           0ms           0ms           0ms
-GET /authors/{id}.json      authors     0.00%   0.0rps           0ms           0ms           0ms
+DELETE /authors/{id}.json   authors         -        -             -             -             -
+GET /authors.json           authors         -        -             -             -             -
+GET /authors/{id}.json      authors         -        -             -             -             -
 HEAD /authors/{id}.json     authors    50.85%   3.9rps           5ms          10ms          17ms
-POST /authors.json          authors     0.00%   0.0rps           0ms           0ms           0ms
-[DEFAULT]                   authors     0.00%   0.0rps           0ms           0ms           0ms
+POST /authors.json          authors         -        -             -             -             -
+[DEFAULT]                   authors         -        -             -             -             -
 ```
 
 One thing that’s clear is that all requests from books to authors are to the
@@ -372,12 +367,12 @@ This should look like:
 
 ```bash
 ROUTE                       SERVICE   EFFECTIVE_SUCCESS   EFFECTIVE_RPS   ACTUAL_SUCCESS   ACTUAL_RPS   LATENCY_P50   LATENCY_P95   LATENCY_P99
-DELETE /authors/{id}.json   authors               0.00%          0.0rps            0.00%       0.0rps           0ms           0ms           0ms
-GET /authors.json           authors               0.00%          0.0rps            0.00%       0.0rps           0ms           0ms           0ms
-GET /authors/{id}.json      authors               0.00%          0.0rps            0.00%       0.0rps           0ms           0ms           0ms
+DELETE /authors/{id}.json   authors                   -               -                -            -             -           0ms
+GET /authors.json           authors                   -               -                -            -             -           0ms
+GET /authors/{id}.json      authors                   -               -                -            -             -           0ms
 HEAD /authors/{id}.json     authors             100.00%          2.8rps           58.45%       4.7rps           7ms          25ms          37ms
-POST /authors.json          authors               0.00%          0.0rps            0.00%       0.0rps           0ms           0ms           0ms
-[DEFAULT]                   authors               0.00%          0.0rps            0.00%       0.0rps           0ms           0ms           0ms
+POST /authors.json          authors                   -               -                -            -             -           0ms
+[DEFAULT]                   authors                   -               -                -            -             -           0ms
 ```
 
 You'll notice that the `-o wide` flag has added some columns to the `routes`
@@ -413,7 +408,7 @@ GET /books.json             books   100.00%   1.3rps           9ms          34ms
 GET /books/{id}.json        books   100.00%   2.0rps           9ms          52ms          91ms
 POST /books.json            books   100.00%   1.3rps          45ms         140ms         188ms
 PUT /books/{id}.json        books   100.00%   0.7rps          80ms         170ms         194ms
-[DEFAULT]                   books     0.00%   0.0rps           0ms           0ms           0ms
+[DEFAULT]                   books         -        -             -             -             -
 ```
 
 Requests to the `books` service's `PUT /books/{id}.json` route include retries
@@ -458,10 +453,20 @@ GET /books.json             books             100.00%          1.3rps          1
 GET /books/{id}.json        books             100.00%          2.2rps          100.00%       2.2rps           8ms          19ms          28ms
 POST /books.json            books             100.00%          1.3rps          100.00%       1.3rps          27ms          81ms          96ms
 PUT /books/{id}.json        books              86.96%          0.8rps          100.00%       0.7rps          75ms          98ms         100ms
-[DEFAULT]                   books               0.00%          0.0rps            0.00%       0.0rps           0ms           0ms           0ms
+[DEFAULT]                   books                   -               -                -            -             -
 ```
 
 The latency numbers include time spent in the `webapp` application itself, so
 it's expected that they exceed the 25ms timeout that we set for requests from
 `webapp` to `books`. We can see that the timeouts are working by observing that
 the effective success rate for our route has dropped below 100%.
+
+## Clean Up
+
+To remove the books app and the booksapp namespace from your cluster, run:
+
+```bash
+curl -sL https://run.linkerd.io/booksapp.yml \
+  | kubectl -n booksapp delete -f - \
+  && kubectl delete ns booksapp
+```

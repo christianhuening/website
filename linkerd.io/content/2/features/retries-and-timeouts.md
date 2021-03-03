@@ -1,6 +1,6 @@
 +++
 title = "Retries and Timeouts"
-description = "Linkerd can be configured to perform service-specific retries and timeouts."
+description = "Linkerd can perform service-specific retries and timeouts."
 weight = 3
 +++
 
@@ -20,6 +20,13 @@ retryable or specify timeouts for routes.  This will cause the Linkerd proxy to
 perform the appropriate retries or timeouts when calling that service.  Retries
 and timeouts are always performed on the *outbound* (client) side.
 
+{{< note >}}
+If working with headless services, service profiles cannot be retrieved. Linkerd
+reads service discovery information based off the target IP address, and if that
+happens to be a pod IP address then it cannot tell which service the pod belongs
+to.
+{{< /note >}}
+
 These can be setup by following the guides:
 
 - [Configuring Retries](/2/tasks/configuring-retries/)
@@ -31,7 +38,7 @@ Traditionally, when performing retries, you must specify a maximum number of
 retry attempts before giving up. Unfortunately, there are two major problems
 with configuring retries this way.
 
-- Choosing a maximum number of retry attempts is a guessing game.
+### Choosing a maximum number of retry attempts is a guessing game
 
 You need to pick a number that’s high enough to make a difference; allowing
 more than one retry attempt is usually prudent and, if your service is less
@@ -42,7 +49,7 @@ increase the latency of requests that need to be retried. In practice, you
 usually pick a maximum retry attempts number out of a hat (3?) and then tweak
 it through trial and error until the system behaves roughly how you want it to.
 
-- Systems configured this way are vulnerable to retry storms.
+### Systems configured this way are vulnerable to retry storms
 
 A [retry storm](https://twitter.github.io/finagle/guide/Glossary.html)
 begins when one service starts (for any reason) to experience a larger than
@@ -54,7 +61,7 @@ make matters even worse, if any of the clients’ clients are configured with
 retries, the number of retries compounds multiplicatively and can turn a small
 number of errors into a self-inflicted denial of service attack.
 
-# Retry Budgets to the Rescue
+## Retry Budgets to the Rescue
 
 To avoid the problems of retry storms and arbitrary numbers of retry attempts,
 retries are configured using retry budgets. Rather than specifying a fixed

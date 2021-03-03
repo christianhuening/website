@@ -1,22 +1,13 @@
 +++
-title = "I. Top-line service metrics"
+aliases = ["/tutorials/part-one/", "/tutorials/part-five/", "/tutorials_staging/part-five/", "/tutorials_staging/part-six/", "/tutorials_staging/part-seven/", "/tutorials_staging/part-eight/", "/tutorials_staging/part-nine/", "/tutorials_staging/part-ten/", "/tutorials_staging/part-eleven/"]
 description = "What is a service mesh, and how is it used by cloud native apps—apps designed for the cloud? In this tutorial, we’ll show you how to use Linkerd as a service mesh."
+title = "I. Top-line service metrics"
 weight = 2
-aliases = [
-  "/tutorials/part-one/",
-  "/tutorials/part-five/",
-  "/tutorials_staging/part-five/",
-  "/tutorials_staging/part-six/",
-  "/tutorials_staging/part-seven/",
-  "/tutorials_staging/part-eight/",
-  "/tutorials_staging/part-nine/",
-  "/tutorials_staging/part-ten/",
-  "/tutorials_staging/part-eleven/"
-]
 [menu.docs]
-  parent = "tutorials"
-+++
+parent = "tutorials"
+weight = 7
 
++++
 This tutorial focuses on visibility. You will learn how to use Linkerd to capture
 and report top-level service metrics such as success rates, request volumes, and
 latencies without requiring changes to application code.
@@ -145,12 +136,12 @@ supplemental package that includes a simple Prometheus and Grafana setup and
 is configured to automatically find Linkerd instances.
 
 Install Linkerd-viz using
-[this Linkerd-viz config](https://raw.githubusercontent.com/linkerd/linkerd-viz/master/k8s/linkerd-viz.yml).
+[this Linkerd-viz config](https://raw.githubusercontent.com/linkerd/linkerd-viz/main/k8s/linkerd-viz.yml).
 
 This will install Linkerd-viz into the default namespace:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/linkerd/linkerd-viz/master/k8s/linkerd-viz.yml
+kubectl apply -f https://raw.githubusercontent.com/linkerd/linkerd-viz/main/k8s/linkerd-viz.yml
 ```
 
 Open Linkerd-viz’s external IP to view the dashboard:

@@ -3,8 +3,9 @@ title: 'Linkerd at KubeCon EU 2019: Benchmarks, SMI, VSCode, and more'
 author: 'william'
 date: Fri, 31 May 2019 09:00:00 +0000
 draft: false
+featured: false
 tags: [Community, Linkerd, Kubecon]
-thumbnail: kccnceu19-linkerd.jpg
+thumbnail: /uploads/kccnceu19-linkerd.jpg
 ---
 
 ![Linkerd at KCCNCEU19](/uploads/kccnceu19-linkerd.jpg)
@@ -25,17 +26,17 @@ surprise you.
 
 ## Microsoft and Linkerd
 
-On Tuesday, Microsoft announced the [Service Mesh Interface](smi-spec.org), a
-specification that exposes core service mesh features like telemetry, traffic
-shifting, and policy via Kubernetes primitives. [Linkerd was a major part of
-the SMI launch](https://linkerd.io/2019/05/24/linkerd-and-smi/), and we're
-excited about the opportunities this opens up for us, especially around
-integrations like [Kiali](https://www.kiali.io/),
+On Tuesday, Microsoft announced the [Service Mesh
+Interface](https://smi-spec.io), a specification that exposes core service mesh
+features like telemetry, traffic shifting, and policy via Kubernetes primitives.
+[Linkerd was a major part of the SMI
+launch](https://linkerd.io/2019/05/24/linkerd-and-smi/), and we're excited about
+the opportunities this opens up for us, especially around integrations like
+[Kiali](https://www.kiali.io/),
 [Flagger](https://github.com/weaveworks/flagger), and
 [Kubecost](https://kubecost.com/)!
 
-On Wednesday, the VSCode team launched a [Linkerd VSCode
-plugin](https://marketplace.visualstudio.com/items?itemName=bhargav.vscode-linkerd),
+On Wednesday, the VSCode team launched a [Linkerd VSCode plugin][vscode],
 adding cool Linkerd functionality to your local VSCode editor! (See the [talk
 here](https://www.youtube.com/watch?v=fOvpMfunD4s#t=20m01s).)
 
@@ -55,7 +56,7 @@ users to automatically encrypt communication between functions! (You can read
 [the full guide
 here](https://github.com/openfaas-incubator/openfaas-linkerd2).)
 
-{{<tweet 1129105603354333184>}}
+{{< tweet 1129105603354333184 >}}
 
 ## And, of course, lots and lots of talks!
 
@@ -95,11 +96,11 @@ This was another great Kubecon for Linkerd. It was incredible to meet so many
 enthusiastic and friendly people, and we can't wait to do it all again this
 November in San Diego!
 
-{{<tweet 1130789969293991936>}}
+{{< tweet 1130789969293991936 >}}
 
-{{<tweet 1131493061916319744>}}
+{{< tweet 1131493061916319744 >}}
 
-{{<tweet 1130810652862373889>}}
+{{< tweet 1130810652862373889 >}}
 
 ---
 
@@ -110,3 +111,5 @@ hosted on [GitHub](https://github.com/linkerd/), and we have a thriving
 community on [Slack](https://slack.linkerd.io),
 [Twitter](https://twitter.com/linkerd), and the [mailing
 lists](https://linkerd.io/2/get-involved/). Come and join the fun!
+
+[vscode]: https://marketplace.visualstudio.com/items?itemName=bhargav.vscode-linkerd

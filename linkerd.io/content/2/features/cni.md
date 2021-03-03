@@ -1,7 +1,6 @@
 +++
-title = "Experimental: CNI Plugin"
+title = "CNI Plugin"
 description = "Linkerd can be configured to run a CNI plugin that rewrites each pod's iptables rules automatically."
-weight = 12
 +++
 
 Linkerd installs can be configured to run a
@@ -12,16 +11,13 @@ is enabled, individual pods no longer need to include an init container that
 requires the `NET_ADMIN` capability to perform rewriting. This can be useful in
 clusters where that capability is restricted by cluster administrators.
 
-This feature is currently **experimental**, as it has not been tested on most
-major cloud providers. Follow
-[this issue](https://github.com/linkerd/linkerd2/issues/2174) for status
-updates.
-
 ## Installation
 
 Usage of the Linkerd CNI plugin requires that the `linkerd-cni` DaemonSet be
 successfully installed on your cluster _first_, before installing the Linkerd
 control plane.
+
+### Using the CLI
 
 To install the `linkerd-cni` DaemonSet, run:
 
@@ -43,6 +39,38 @@ linkerd install --linkerd-cni-enabled | kubectl apply -f -
 This will set a `cniEnabled` flag in the global `linkerd-config` ConfigMap. All
 subsequent proxy injections will read this field and omit init containers.
 
+### Using Helm
+
+First ensure that your Helm local cache is updated:
+
+```bash
+helm repo update
+
+helm search linkerd2-cni
+NAME                      CHART VERSION  APP VERSION    DESCRIPTION
+linkerd-edge/linkerd2-cni   20.1.1       edge-20.1.1    A helm chart containing the resources needed by the Linke...
+linkerd-stable/linkerd2-cni  2.7.0       stable-2.7.0   A helm chart containing the resources needed by the Linke...
+```
+
+Run the following commands to install the CNI DaemonSet:
+
+```bash
+# install the CNI plugin first
+helm install linkerd2-cni linkerd2/linkerd2-cni
+
+# ensure the plugin is installed and ready
+linkerd check --pre --linkerd-cni-enabled
+```
+
+{{< note >}}
+For Helm versions < v3, `--name` flag has to specifically be passed.
+In Helm v3, It has been deprecated, and is the first argument as
+ specified above.
+{{< /note >}}
+
+At that point you are ready to install Linkerd with CNI enabled.
+You can follow [Installing Linkerd with Helm](/2/tasks/install-helm/) to do so.
+
 ## Additional configuration
 
 The `linkerd install-cni` command includes additional flags that you can use to
@@ -63,3 +91,16 @@ The most important flags are:
    logs. One way to do this is to log onto the node and use
    `journalctl -t kubelet`. The string `linkerd-cni:` can be used as a search to
    find the plugin log output.
+
+## Upgrading the CNI plugin
+
+Since the CNI plugin is basically stateless, there is no need for a separate
+`upgrade` command. If you are using the CLI to upgrade the CNI plugin you can
+just do:
+
+```bash
+linkerd install-cni   | kubectl apply --prune -l  linkerd.io/cni-resource=true -f -
+```
+
+Keep in mind that if you are upgrading the plugin from an experimental version,
+you need to uninstall and install it again.

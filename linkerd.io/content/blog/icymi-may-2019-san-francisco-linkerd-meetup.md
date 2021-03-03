@@ -4,8 +4,9 @@ title: 'ICYMI: May 2019 San Francisco Linkerd Meetup'
 author: 'kiersten'
 date: Mon, 12 May 2019 09:00:00 +0000
 draft: false
+featured: false
 tags: [Community, Linkerd]
-thumbnail: sf-linkerd-meetup-image.png
+thumbnail: /uploads/sf-linkerd-meetup-image.png
 ---
 
 ![linkerd san francisco meetup](/uploads/sf-linkerd-meetup-image.png)

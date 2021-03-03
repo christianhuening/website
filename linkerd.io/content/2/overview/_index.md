@@ -13,24 +13,18 @@ aliases = [
 weight = 1
 +++
 
-{{< note >}}
-This documentation is specific to Linkerd 2.x. For the 1.x branch of
-development, [go here](/1/overview/).
-{{< /note >}}
+Linkerd is a _service mesh_ for Kubernetes. It makes running services easier
+and safer by giving you runtime debugging, observability, reliability, and
+security&mdash;all without requiring any changes to your code.
 
-Linkerd is a _service mesh_ for Kubernetes and other frameworks. It makes
-running services easier and safer by giving you runtime debugging,
-observability, reliability, and security&mdash;all without requiring any
-changes to your code.
-
-For a brief introduction to the service mesh model, we recommend reading
-[What's a service mesh? And why do I need
-one?](https://blog.buoyant.io/2017/04/25/whats-a-service-mesh-and-why-do-i-need-one/)
+For a brief introduction to the service mesh model, we recommend reading [The
+Service Mesh: What Every Software Engineer Needs to Know about the World's Most
+Over-Hyped Technology](https://servicemesh.io/).
 
 Linkerd is fully open source, licensed under [Apache
-v2](https://github.com/linkerd/linkerd2/blob/master/LICENSE), and is a [Cloud
+v2](https://github.com/linkerd/linkerd2/blob/main/LICENSE), and is a [Cloud
 Native Computing Foundation](https://cncf.io) incubating project. Linkerd is
-developed in the open in the [Linkerd GitHub repo](https://github.com/linkerd).
+developed in the open in the [Linkerd GitHub organization](https://github.com/linkerd).
 
 Linkerd has three basic components: a UI, a *data plane*, and a *control
 plane*. You run Linkerd by:
@@ -39,7 +33,8 @@ plane*. You run Linkerd by:
 1. [Installing the control plane into your cluster](/2/getting-started/#step-3-install-linkerd-onto-the-cluster);
 1. [Adding your services to Linkerd's data plane](/2/tasks/adding-your-service/).
 
-Once a service is running with Linkerd, you can use Linkerd's UI to inspect and
+Once a service is running with Linkerd, you can use [Linkerd's
+UI](/2/getting-started/#step-4-explore-linkerd) to inspect and
 manipulate it.
 
 You can [get started](/2/getting-started/) in minutes!
