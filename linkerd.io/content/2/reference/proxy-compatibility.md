@@ -6,6 +6,7 @@ description = "A comprehensive listing of 3rd party services and their status if
 | Tool     | Protocol Detection | mTLS | Load Balancing | etc... |
 |----------|--------------------|------|----------------|--------|
 | Redis    | ✓                 | ✓    | ✓             |        |
-| RabbitMQ | ✓                 |      |               |        |
+| RabbitMQ | ✓                 | ✓     |               |        |
 | MySQL    | ✓                 |      |               | ✓      |
 | Redis    | x                 | ✓     |              |         |
+| CockroachDB    |                  | ✓     |              |         |
